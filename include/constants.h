@@ -1,0 +1,11 @@
+#ifndef CONSTANTS_H_
+#define CONSTANTS_H_
+
+#define FACTOR 80
+#define SCREEN_WIDTH (FACTOR * 16)
+#define SCREEN_HEIGHT (FACTOR * 9)
+#define SEGMENT_SIZE 40
+#define INITIAL_SNAKE_LENGTH 3
+#define SNAKE_SPEED 12
+
+#endif
