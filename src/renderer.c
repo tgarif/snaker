@@ -77,3 +77,22 @@ void RenderBackground(void) {
         }
     }
 }
+
+void RenderButton(Rectangle button, const char *text, Vector2 mousePos, bool mousePressed, bool isHighlighted) {
+    Color buttonColor;
+
+    if (isHighlighted) {
+        buttonColor = BLUE;  // Highlight color for selected buttons
+    } else if (CheckCollisionPointRec(mousePos, button)) {
+        buttonColor = LIGHTGRAY;  // Hover color
+    } else {
+        buttonColor = DARKGRAY;  // Default color
+    }
+
+    DrawRectangleRec(button, buttonColor);
+    DrawText(text, button.x + (button.width - MeasureText(text, 20)) / 2, button.y + (button.height - 20) / 2, 20, WHITE);
+
+    if (mousePressed && CheckCollisionPointRec(mousePos, button)) {
+        DrawRectangleRec(button, Fade(RAYWHITE, 0.3f));  // Light overlay when clicked
+    }
+}

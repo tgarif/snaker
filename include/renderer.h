@@ -7,5 +7,6 @@
 void RenderSnake(const Snake* snake, Texture2D headTextures[4], Texture2D bodyTextures[6], Texture2D tailTexture[4]);
 void RenderFood(const Food* food, Texture2D foodTexture);
 void RenderBackground();
+void RenderButton(Rectangle button, const char* text, Vector2 mousePos, bool mousePressed, bool isHighlighted);
 
 #endif

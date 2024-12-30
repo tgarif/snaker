@@ -17,7 +17,7 @@ void InitializeGame(Snake *snake, Food *food) {
 
     for (int i = 0; i < snake->length; ++i) {
         snake->segments[i].position = (Vector2){
-            (float)SCREEN_WIDTH / 2 - i * SEGMENT_SIZE, (float)SCREEN_HEIGHT / 2};
+            SCREEN_WIDTH / 2 - i * SEGMENT_SIZE, SCREEN_HEIGHT / 2};
         snake->segments[i].direction = (Vector2){1, 0};  // Moving right
     }
 
@@ -64,8 +64,8 @@ bool CheckFoodCollision(const Snake *snake, const Food *food) {
 void SpawnFood(Food *food, const Snake *snake) {
     bool isValid;
     do {
-        food->position.x = (int)(RandomFloat(0, (float)SCREEN_WIDTH / SEGMENT_SIZE)) * SEGMENT_SIZE;
-        food->position.y = (int)(RandomFloat(0, (float)SCREEN_HEIGHT / SEGMENT_SIZE)) * SEGMENT_SIZE;
+        food->position.x = (int)(RandomFloat(0, SCREEN_WIDTH / SEGMENT_SIZE)) * SEGMENT_SIZE;
+        food->position.y = (int)(RandomFloat(0, SCREEN_HEIGHT / SEGMENT_SIZE)) * SEGMENT_SIZE;
 
         isValid = true;
         for (int i = 0; i < snake->length; ++i) {
@@ -102,4 +102,48 @@ void QueueDirection(Snake *snake, Vector2 inputDirection) {
             snake->directionQueue[snake->queueSize++] = inputDirection;
         }
     }
+}
+
+float GetSnakeSpeed(Difficulty difficulty) {
+    switch (difficulty) {
+        case DIFF_EASY:
+            return SNAKE_SPEED;
+        case DIFF_MEDIUM:
+            return 13.0f;
+        case DIFF_HARD:
+            return 16.0f;
+        default:
+            return SNAKE_SPEED;
+    }
+}
+
+// Update the game state based on input
+GameState UpdateGameState(GameState currentState, Rectangle buttons[], Difficulty *difficulty, Vector2 mousePos, bool mousePressed) {
+    if (currentState == STATE_START) {
+        if (mousePressed) {
+            if (CheckCollisionPointRec(mousePos, buttons[0])) {
+                return STATE_PLAY;
+            } else if (CheckCollisionPointRec(mousePos, buttons[1])) {
+                return STATE_DIFFICULTY;
+            } else if (CheckCollisionPointRec(mousePos, buttons[2])) {
+                return STATE_QUIT;
+            }
+        }
+    } else if (currentState == STATE_DIFFICULTY) {
+        if (mousePressed) {
+            if (CheckCollisionPointRec(mousePos, buttons[0])) {
+                *difficulty = DIFF_EASY;
+                return STATE_START;
+            } else if (CheckCollisionPointRec(mousePos, buttons[1])) {
+                *difficulty = DIFF_MEDIUM;
+                return STATE_START;
+            } else if (CheckCollisionPointRec(mousePos, buttons[2])) {
+                *difficulty = DIFF_HARD;
+                return STATE_START;
+            } else if (CheckCollisionPointRec(mousePos, buttons[3])) {
+                return STATE_START;
+            }
+        }
+    }
+    return currentState;
 }
