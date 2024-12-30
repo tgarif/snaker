@@ -4,5 +4,6 @@
 #include "raylib.h"
 
 Vector2 GetGridInputDirection(Vector2 currentDirection);
+Vector2 GetMousePositionInGame(void);
 
 #endif

@@ -109,9 +109,9 @@ float GetSnakeSpeed(Difficulty difficulty) {
         case DIFF_EASY:
             return SNAKE_SPEED;
         case DIFF_MEDIUM:
-            return 13.0f;
+            return 15.0f;
         case DIFF_HARD:
-            return 16.0f;
+            return 20.0f;
         default:
             return SNAKE_SPEED;
     }
