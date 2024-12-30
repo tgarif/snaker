@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "constants.h"
+#include "raymath.h"
 #include "utils.h"
 
 void InitializeGame(Snake *snake, Food *food) {
@@ -21,6 +22,7 @@ void InitializeGame(Snake *snake, Food *food) {
     }
 
     snake->speed = SNAKE_SPEED;
+    snake->queueSize = 0;
 
     SpawnFood(food, snake);
 }
@@ -87,4 +89,17 @@ void AddNewSegment(Snake *snake) {
     // Add a new segment at the position of the last segment
     snake->segments[snake->length - 1].position = snake->segments[snake->length - 2].position;
     snake->segments[snake->length - 1].direction = snake->segments[snake->length - 2].direction;
+}
+
+void QueueDirection(Snake *snake, Vector2 inputDirection) {
+    // Ignore neutral input
+    if (inputDirection.x == 0 && inputDirection.y == 0) return;
+
+    // Ensure the input is valid and not the reverse of the current direction
+    if ((inputDirection.x != -snake->segments[0].direction.x || inputDirection.y != -snake->segments[0].direction.y)) {
+        // Avoid adding the same direction as the last one in the queue
+        if (snake->queueSize == 0 || !Vector2Equals(inputDirection, snake->directionQueue[snake->queueSize - 1])) {
+            snake->directionQueue[snake->queueSize++] = inputDirection;
+        }
+    }
 }

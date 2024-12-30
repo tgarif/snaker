@@ -6,6 +6,6 @@
 #define SCREEN_HEIGHT (FACTOR * 9)
 #define SEGMENT_SIZE 40
 #define INITIAL_SNAKE_LENGTH 3
-#define SNAKE_SPEED 12
+#define SNAKE_SPEED 10
 
 #endif

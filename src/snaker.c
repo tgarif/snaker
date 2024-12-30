@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "constants.h"
@@ -51,12 +52,23 @@ int main(void) {
         accumulatedTime += currentTime - lastUpdateTime;
         lastUpdateTime = currentTime;
 
+        // Queue input direction
+        Vector2 inputDirection = GetGridInputDirection(snake.segments[0].direction);
+        QueueDirection(&snake, inputDirection);
+
         if (accumulatedTime >= 1.0 / snake.speed) {
             accumulatedTime -= 1.0 / snake.speed;
 
-            // Get input and update the snake's direction
-            Vector2 inputDirection = GetGridInputDirection(snake.segments[0].direction);
-            snake.segments[0].direction = inputDirection;
+            // Apply the next direction from the queue, if available
+            if (snake.queueSize > 0) {
+                snake.segments[0].direction = snake.directionQueue[0];
+
+                // Shift the queue
+                for (int i = 1; i < snake.queueSize; ++i) {
+                    snake.directionQueue[i - 1] = snake.directionQueue[i];
+                }
+                snake.queueSize--;  // Reduce the queue size
+            }
 
             // Update the snake
             UpdateSnake(&snake);
