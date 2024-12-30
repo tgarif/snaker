@@ -1,3 +1,2 @@
-build_*/*
-!build_*/.gitkeep
+build_*
 .clangd
